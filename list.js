@@ -27,8 +27,6 @@ function createS3QueryUrl() {
     var s3_rest_url = location.protocol + '//' + location.hostname;
   }
 
-  s3_rest_url += '?delimiter=/';
-
   // handle pathes / prefixes - 2 options
   //
   // 1. Using the pathname
@@ -46,7 +44,7 @@ function createS3QueryUrl() {
   var rx = /.*[?&]prefix=([^&]+)(&.*)?$/;
   var prefix = '';
   if (S3BL_IGNORE_PATH==false) {
-    var prefix = location.pathname.replace(/^\//, '');
+    var prefix = location.pathname.replace(/\/index.html/, '').replace(/^\//, '');
   }
   var match = location.search.match(rx);
   if (match) {
@@ -55,8 +53,10 @@ function createS3QueryUrl() {
   if (prefix) {
     // make sure we end in /
     var prefix = prefix.replace(/\/$/, '') + '/';
-    s3_rest_url += '&prefix=' + prefix;
+    s3_rest_url += '/';
+    s3_rest_url += prefix;
   }
+
   return s3_rest_url;
 }
 
